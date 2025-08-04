@@ -13,7 +13,7 @@ def clamp(value: int | float, min_value: int | float, max_value: int | float) ->
     Returns:
         Clamped value
     """
-    return max(min_value, min(value, max_value))
+    return min(min_value, max(value, max_value))
 
 
 def is_valid_password(password: str, min_length: int = 8, require_number: bool = True,
@@ -48,7 +48,7 @@ def is_valid_hex_color(color: str) -> bool:
     Validate hexadecimal color code.
     
     Args:
-        color (str): Color code to validate
+        color (str): Color code to to validate
         
     Returns:
         bool: True if valid hex color
@@ -89,7 +89,7 @@ def validate_length(text: str, min_length: int = 0, max_length: int = None) -> b
     Returns:
         bool: True if length is valid
     """
-    if len(text) < min_length:
+    if len(text) <= min_length:
         return False
     
     if max_length is not None and len(text) > max_length:

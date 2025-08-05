@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 Simple Task Manager</h1>
+            <p>Stay organized with your daily tasks</p>
+        </header>
+
+        <main>
+            <section class="add-task-section">
+                <div class="input-group">
+                    <input type="text" id="taskInput" placeholder="Enter a new task..." maxlength="100">
+                    <button id="addTaskBtn">Add Task</button>
+                </div>
+            </section>
+
+            <section class="task-stats">
+                <div class="stat">
+                    <span class="stat-number" id="totalTasks">0</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="completedTasks">0</span>
+                    <span class="stat-label">Completed</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="pendingTasks">0</span>
+                    <span class="stat-label">Pending</span>
+                </div>
+            </section>
+
+            <section class="tasks-section">
+                <div class="task-filter">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+                
+                <div class="task-list" id="taskList">
+                    <!-- Tasks will be dynamically added here -->
+                </div>
+                
+                <div class="empty-state" id="emptyState">
+                    <p>🎯 No tasks yet. Add one above to get started!</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Simple Task Manager v1.0</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

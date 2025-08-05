@@ -24,9 +24,9 @@ class TaskManager {
      * Bind event listeners to DOM elements
      */
     bindEvents() {
-        var addTaskBtn = document.getElementById('addTaskBtn');
-        var taskInput = document.getElementById('taskInput');
-        var filterBtns = document.querySelectorAll('.filter-btn');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskInput = document.getElementById('taskInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
 
         addTaskBtn.addEventListener('click', () => this.addTask());
         taskInput.addEventListener('keypress', (e) => {
@@ -35,7 +35,7 @@ class TaskManager {
             }
         });
 
-        filterBtns.forEach(btn=>{
+        filterBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 this.setFilter(e.target.dataset.filter);
             });
@@ -46,9 +46,9 @@ class TaskManager {
      * Add a new task
      */
     addTask() {
-        var taskInput = document.getElementById('taskInput');
-        const prioritySelect = document.getElementById('prioritySelect');
-        var taskText = taskInput.value.trim();
+        const taskInput = document.getElementById('taskInput');
+        const taskText = taskInput.value.trim();
+        var prioritySelect = document.getElementById('prioritySelect');
         var priority = prioritySelect.value;
 
         if (taskText === '') {
@@ -56,7 +56,7 @@ class TaskManager {
             return;
         }
 
-        var task={
+        const task = {
             id: Date.now(),
             text: taskText,
             priority:priority,
@@ -189,18 +189,18 @@ class TaskManager {
      * @returns {HTMLElement} The task DOM element
      */
     createTaskElement(task) {
-        var taskItem = document.createElement('div');
+        const taskItem = document.createElement('div');
         taskItem.className = `task-item priority-${task.priority} ${task.completed ? 'completed' : ''}`;
 
-        var createdDate = new Date(task.createdAt).toLocaleDateString();
+        const createdDate = new Date(task.createdAt).toLocaleDateString();
         var priorityIcon = this.getPriorityIcon(task.priority);
         var priorityText = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
 
         taskItem.innerHTML = `
             <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} 
                    onchange="taskManager.toggleTask(${task.id})">
-            <span class='task-text'>${this.escapeHtml(task.text)}</span>
-            <span class="priority-badge ${task.priority}">${priorityIcon} ${priorityText}</span>
+            <span class="task-text">${this.escapeHtml(task.text)}</span>
+            <span class='priority-badge ${task.priority}'>${priorityIcon} ${priorityText}</span>
             <span class="task-date">${createdDate}</span>
             <button class="delete-btn" onclick="taskManager.deleteTask(${task.id})">Delete</button>
         `;
@@ -212,7 +212,7 @@ class TaskManager {
      * Get priority icon based on priority level
      * @param {string} priority - The priority level
      * @returns {string} The priority icon
-     */
+     */   
     getPriorityIcon(priority) {
         switch(priority){
             case 'high':
@@ -254,7 +254,7 @@ class TaskManager {
      */
     loadTasks() {
         try {
-            var saved = localStorage.getItem('taskManagerTasks');
+            const saved = localStorage.getItem('taskManagerTasks');
             if (saved) {
                 this.tasks = JSON.parse(saved);
                 
@@ -276,20 +276,20 @@ class TaskManager {
      * @returns {string} Escaped text
      */
     escapeHtml(text) {
-        var div = document.createElement('div');
+        const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
 }
 
 // Initialize the task manager when the page loads
-var taskManager;
+let taskManager;
 
 document.addEventListener('DOMContentLoaded', () => {
     taskManager = new TaskManager();
 });
 
-// Export for potential future use  
+// Export for potential future use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = TaskManager;
 }

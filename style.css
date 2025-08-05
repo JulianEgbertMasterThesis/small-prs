@@ -75,10 +75,10 @@ main {
     background: white;
     cursor: pointer;
     transition: border-color 0.3s ease;
-    min-width: 180px;
+    min-width:180px;
 }
 
-.priority-select:focus {
+.priority-select:focus{
     outline: none;
     border-color: #667eea;
 }
@@ -227,18 +227,19 @@ main {
     border-radius: 12px;
     font-size: 12px;
     font-weight: bold;
-    margin-right: 10px;
+    margin-right:10px;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.priority-badge.high {
+.priority-badge.high{
     background: #dc3545;
     color: white;
 }
 
 .priority-badge.medium {
     background: #ffc107;
-    color: #333;
+    color:#333;
 }
 
 .priority-badge.low {

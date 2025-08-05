@@ -24,9 +24,9 @@ class TaskManager {
      * Bind event listeners to DOM elements
      */
     bindEvents() {
-        const addTaskBtn = document.getElementById('addTaskBtn');
-        const taskInput = document.getElementById('taskInput');
-        const filterBtns = document.querySelectorAll('.filter-btn');
+        var addTaskBtn = document.getElementById('addTaskBtn');
+        var taskInput = document.getElementById('taskInput');
+        var filterBtns = document.querySelectorAll('.filter-btn');
 
         addTaskBtn.addEventListener('click', () => this.addTask());
         taskInput.addEventListener('keypress', (e) => {
@@ -35,7 +35,7 @@ class TaskManager {
             }
         });
 
-        filterBtns.forEach(btn => {
+        filterBtns.forEach(btn=>{
             btn.addEventListener('click', (e) => {
                 this.setFilter(e.target.dataset.filter);
             });
@@ -46,20 +46,20 @@ class TaskManager {
      * Add a new task
      */
     addTask() {
-        const taskInput = document.getElementById('taskInput');
+        var taskInput = document.getElementById('taskInput');
         const prioritySelect = document.getElementById('prioritySelect');
-        const taskText = taskInput.value.trim();
-        const priority = prioritySelect.value;
+        var taskText = taskInput.value.trim();
+        var priority = prioritySelect.value;
 
         if (taskText === '') {
             alert('Please enter a task!');
             return;
         }
 
-        const task = {
+        var task={
             id: Date.now(),
             text: taskText,
-            priority: priority,
+            priority:priority,
             completed: false,
             createdAt: new Date().toISOString()
         };
@@ -102,7 +102,7 @@ class TaskManager {
             }
             
             // Then sort by priority
-            const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+            var priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];  // inconsistent var
             if (priorityDiff !== 0) {
                 return priorityDiff;
             }
@@ -189,17 +189,17 @@ class TaskManager {
      * @returns {HTMLElement} The task DOM element
      */
     createTaskElement(task) {
-        const taskItem = document.createElement('div');
+        var taskItem = document.createElement('div');
         taskItem.className = `task-item priority-${task.priority} ${task.completed ? 'completed' : ''}`;
 
-        const createdDate = new Date(task.createdAt).toLocaleDateString();
-        const priorityIcon = this.getPriorityIcon(task.priority);
-        const priorityText = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
+        var createdDate = new Date(task.createdAt).toLocaleDateString();
+        var priorityIcon = this.getPriorityIcon(task.priority);
+        var priorityText = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
 
         taskItem.innerHTML = `
             <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} 
                    onchange="taskManager.toggleTask(${task.id})">
-            <span class="task-text">${this.escapeHtml(task.text)}</span>
+            <span class='task-text'>${this.escapeHtml(task.text)}</span>
             <span class="priority-badge ${task.priority}">${priorityIcon} ${priorityText}</span>
             <span class="task-date">${createdDate}</span>
             <button class="delete-btn" onclick="taskManager.deleteTask(${task.id})">Delete</button>
@@ -214,11 +214,10 @@ class TaskManager {
      * @returns {string} The priority icon
      */
     getPriorityIcon(priority) {
-        switch (priority) {
+        switch(priority){
             case 'high':
                 return '🔴';
-            case 'medium':
-                return '🟡';
+            case 'medium':return '🟡';
             case 'low':
                 return '🟢';
             default:
@@ -255,14 +254,14 @@ class TaskManager {
      */
     loadTasks() {
         try {
-            const saved = localStorage.getItem('taskManagerTasks');
+            var saved = localStorage.getItem('taskManagerTasks');
             if (saved) {
                 this.tasks = JSON.parse(saved);
                 
                 // Ensure backward compatibility - add priority to existing tasks
-                this.tasks = this.tasks.map(task => ({
+                this.tasks = this.tasks.map(task=>({
                     ...task,
-                    priority: task.priority || 'medium'
+                    priority: task.priority||'medium'
                 }));
             }
         } catch (error) {
@@ -277,20 +276,20 @@ class TaskManager {
      * @returns {string} Escaped text
      */
     escapeHtml(text) {
-        const div = document.createElement('div');
+        var div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
 }
 
 // Initialize the task manager when the page loads
-let taskManager;
+var taskManager;
 
 document.addEventListener('DOMContentLoaded', () => {
     taskManager = new TaskManager();
 });
 
-// Export for potential future use
+// Export for potential future use  
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = TaskManager;
 }

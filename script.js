@@ -102,7 +102,7 @@ class TaskManager {
             }
             
             // Then sort by priority
-            var priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];  // inconsistent var
+            var priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
             if (priorityDiff !== 0) {
                 return priorityDiff;
             }

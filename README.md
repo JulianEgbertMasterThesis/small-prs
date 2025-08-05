@@ -8,6 +8,7 @@ A lightweight task management system built with JavaScript and HTML. This projec
 - ✅ Mark tasks as complete/incomplete
 - ✅ Delete tasks
 - ✅ Basic task persistence using localStorage
+- ✅ Priority levels (High, Medium, Low) with visual indicators
 
 ## Getting Started
 
@@ -32,7 +33,7 @@ This project is designed to be extensible. Here are some features that could be 
 
 - [ ] **Task Categories/Tags** - Organize tasks by category (work, personal, shopping, etc.)
 - [ ] **Due Dates** - Add deadline functionality with date picker
-- [ ] **Priority Levels** - High, medium, low priority with visual indicators
+- [x] **Priority Levels** - High, medium, low priority with visual indicators
 - [ ] **Task Search/Filter** - Search tasks by name or filter by status/category
 - [ ] **Task Statistics** - Show completion rates, overdue tasks, etc.
 

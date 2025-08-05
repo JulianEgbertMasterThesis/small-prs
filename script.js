@@ -47,7 +47,9 @@ class TaskManager {
      */
     addTask() {
         const taskInput = document.getElementById('taskInput');
+        const prioritySelect = document.getElementById('prioritySelect');
         const taskText = taskInput.value.trim();
+        const priority = prioritySelect.value;
 
         if (taskText === '') {
             alert('Please enter a task!');
@@ -57,11 +59,13 @@ class TaskManager {
         const task = {
             id: Date.now(),
             text: taskText,
+            priority: priority,
             completed: false,
             createdAt: new Date().toISOString()
         };
 
         this.tasks.push(task);
+        this.sortTasksByPriority();
         this.saveTasks();
         this.renderTasks();
         this.updateStats();
@@ -83,6 +87,29 @@ class TaskManager {
             this.renderTasks();
             this.updateStats();
         }
+    }
+
+    /**
+     * Sort tasks by priority (high -> medium -> low) and then by creation date
+     */
+    sortTasksByPriority() {
+        const priorityOrder = { 'high': 0, 'medium': 1, 'low': 2 };
+        
+        this.tasks.sort((a, b) => {
+            // First sort by completion status (incomplete tasks first)
+            if (a.completed !== b.completed) {
+                return a.completed - b.completed;
+            }
+            
+            // Then sort by priority
+            const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+            if (priorityDiff !== 0) {
+                return priorityDiff;
+            }
+            
+            // Finally sort by creation date (newest first for same priority)
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
     }
 
     /**
@@ -135,6 +162,9 @@ class TaskManager {
     renderTasks() {
         const taskList = document.getElementById('taskList');
         const emptyState = document.getElementById('emptyState');
+        
+        // Sort tasks before filtering
+        this.sortTasksByPriority();
         const filteredTasks = this.getFilteredTasks();
 
         // Clear existing tasks
@@ -160,19 +190,40 @@ class TaskManager {
      */
     createTaskElement(task) {
         const taskItem = document.createElement('div');
-        taskItem.className = `task-item ${task.completed ? 'completed' : ''}`;
+        taskItem.className = `task-item priority-${task.priority} ${task.completed ? 'completed' : ''}`;
 
         const createdDate = new Date(task.createdAt).toLocaleDateString();
+        const priorityIcon = this.getPriorityIcon(task.priority);
+        const priorityText = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
 
         taskItem.innerHTML = `
             <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} 
                    onchange="taskManager.toggleTask(${task.id})">
             <span class="task-text">${this.escapeHtml(task.text)}</span>
+            <span class="priority-badge ${task.priority}">${priorityIcon} ${priorityText}</span>
             <span class="task-date">${createdDate}</span>
             <button class="delete-btn" onclick="taskManager.deleteTask(${task.id})">Delete</button>
         `;
 
         return taskItem;
+    }
+
+    /**
+     * Get priority icon based on priority level
+     * @param {string} priority - The priority level
+     * @returns {string} The priority icon
+     */
+    getPriorityIcon(priority) {
+        switch (priority) {
+            case 'high':
+                return '🔴';
+            case 'medium':
+                return '🟡';
+            case 'low':
+                return '🟢';
+            default:
+                return '⚪';
+        }
     }
 
     /**
@@ -207,6 +258,12 @@ class TaskManager {
             const saved = localStorage.getItem('taskManagerTasks');
             if (saved) {
                 this.tasks = JSON.parse(saved);
+                
+                // Ensure backward compatibility - add priority to existing tasks
+                this.tasks = this.tasks.map(task => ({
+                    ...task,
+                    priority: task.priority || 'medium'
+                }));
             }
         } catch (error) {
             console.error('Failed to load tasks:', error);
